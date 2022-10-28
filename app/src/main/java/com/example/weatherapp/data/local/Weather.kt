@@ -11,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
 data class Weather (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")val id: Int,
-    @ColumnInfo(name = "degree")val degree: String,
+    @ColumnInfo(name = "degree")val degree: Double,
     @ColumnInfo(name = "condition")val condition: String,
     @ColumnInfo(name = "location")val location: String,
 ): Parcelable

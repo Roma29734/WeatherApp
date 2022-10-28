@@ -3,16 +3,17 @@ package com.example.weatherapp.ui.screen.main
 import android.graphics.Color.BLACK
 import android.graphics.Color.WHITE
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.example.weatherapp.R
 import com.example.weatherapp.data.local.Weather
 import com.example.weatherapp.databinding.FragmentMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.weatherapp.utils.NetworkState
+import com.example.weatherapp.utils.showShackBarNoInternetConnection
+import com.example.weatherapp.utils.toCelsiusString
 import com.google.android.material.snackbar.Snackbar
 
 @AndroidEntryPoint
@@ -38,31 +39,33 @@ class MainFragment : Fragment() {
             if(state) {
                 binding.progressBar.visibility = View.INVISIBLE
                 viewModel.getOneCity()
-                viewModel.oneCity.observe(viewLifecycleOwner) { responce ->
-                    responce?.body()?.let {
-                        binding.textDegree.text = "${it.current.temp_c}°"
-                        binding.textStatus.text = it.current.condition.text
-                        binding.materialToolbar.title = it.location.name
-                        val weatherLocal =  Weather(1, it.current.temp_c.toString(), it.current.condition.text, it.location.name)
+                viewModel.oneCity.observe(viewLifecycleOwner) { response ->
+                    response?.body()?.let {
+                        val weatherLocal =  Weather(1, it.current.temp_c, it.current.condition.text, it.location.name)
                         viewModel.updateLocalData(weatherLocal)
+                    }
+                }
+                viewModel.localCity.observe(viewLifecycleOwner) {response ->
+                    if(response != null) {
+                        binding.textDegree.text = response.degree.toCelsiusString()
+                        binding.textStatus.text = response.condition
+                        binding.tollBar.textLocatoin.text = response.location
                     }
                 }
             } else {
                 binding.progressBar.visibility = View.VISIBLE
-                viewModel.localCity.observe(viewLifecycleOwner) {responce ->
-                    if(responce != null) {
-                        binding.textDegree.text = responce.degree
-                        binding.textStatus.text = responce.condition
-                        binding.materialToolbar.title = responce.location
+                viewModel.localCity.observe(viewLifecycleOwner) {response ->
+                    if(response != null) {
+                        binding.textDegree.text = response.degree.toCelsiusString()
+                        binding.textStatus.text = response.condition
+                        binding.tollBar.textLocatoin.text = response.location
                     }
                 }
-                Snackbar.make(view, R.string.no_internet, Snackbar.LENGTH_SHORT)
-                    .setTextColor(BLACK)
-                    .setBackgroundTint(WHITE)
-                    .show()
+                showShackBarNoInternetConnection(view)
             }
         }
-
-
+        binding.tollBar.searchImg.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_searchFragment)
+        }
     }
 }

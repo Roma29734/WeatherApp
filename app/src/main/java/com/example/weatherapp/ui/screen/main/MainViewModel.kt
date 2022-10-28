@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.Navigation
 import com.example.weatherapp.data.local.Weather
 import com.example.weatherapp.data.local.dao.WeatherDao
 import com.example.weatherapp.data.local.repository.LocalRepository

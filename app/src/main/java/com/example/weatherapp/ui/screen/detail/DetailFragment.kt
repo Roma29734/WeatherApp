@@ -1,0 +1,58 @@
+package com.example.weatherapp.ui.screen.detail
+
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
+import com.example.weatherapp.databinding.FragmentDetailBinding
+import com.example.weatherapp.utils.NetworkState
+import com.example.weatherapp.utils.showShackBarNoInternetConnection
+import com.example.weatherapp.utils.toCelsiusString
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class DetailFragment : Fragment() {
+
+    lateinit var binding: FragmentDetailBinding
+    private val args by navArgs<DetailFragmentArgs>()
+    private val viewModel by viewModels<DetailViewModel>()
+    private lateinit var Network: NetworkState
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        binding = FragmentDetailBinding.inflate(inflater, container, false)
+        Network = context?.let { NetworkState(it) }!!
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        Network.observe(viewLifecycleOwner) {state ->
+            if(state) {
+                binding.progressBar.visibility = View.INVISIBLE
+                viewModel.getCity(args.searchResult.url)
+                viewModel.oneCity.observe(viewLifecycleOwner) {date ->
+                    date?.body()?.let {
+                        binding.textDegree.text = it.current.temp_c.toCelsiusString()
+                        binding.textStatus.text = it.current.condition.text
+                        binding.tollBar.textLocatoin.text = it.location.name
+                    }
+                }
+            } else {
+                binding.progressBar.visibility = View.VISIBLE
+                showShackBarNoInternetConnection(view)
+            }
+        }
+        binding.tollBar.imageButton.setOnClickListener {
+            Navigation.findNavController(view).popBackStack()
+        }
+    }
+}
