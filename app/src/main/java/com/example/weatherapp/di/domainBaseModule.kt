@@ -1,0 +1,52 @@
+package com.example.weatherapp.di
+
+import com.example.weatherapp.data.local.repository.LocalRepository
+import com.example.weatherapp.data.remote.repository.WeatherRepository
+import com.example.weatherapp.domain.CityUseCases
+import com.example.weatherapp.domain.WeatherUseCases
+import com.example.weatherapp.domain.cityUserCase.AddLocalCityCase
+import com.example.weatherapp.domain.cityUserCase.DeleteLocalCityCase
+import com.example.weatherapp.domain.cityUserCase.GetLocalCityCase
+import com.example.weatherapp.domain.cityUserCase.UpdateLocalCutyCase
+import com.example.weatherapp.domain.weatherUseCases.GetWeather
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@InstallIn(SingletonComponent::class)
+@Module
+class domainBaseModule {
+
+    @Provides
+    fun provideGetWeather(repository: WeatherRepository) = GetWeather(repository)
+
+    @Provides
+    fun provideWeatherUseCases(getWeather: GetWeather) = WeatherUseCases(getWeather)
+
+    @Singleton
+    @Provides
+    fun provideGetLocalCityCase(repository: LocalRepository) = GetLocalCityCase(repository)
+
+    @Singleton
+    @Provides
+    fun provideUpdateLocalCutyCase(repository: LocalRepository) = UpdateLocalCutyCase(repository)
+
+    @Singleton
+    @Provides
+    fun provideAddLocalCityCase(repository: LocalRepository) = AddLocalCityCase(repository)
+
+    @Singleton
+    @Provides
+    fun provideDeleteLocalCityCase(repository: LocalRepository) = DeleteLocalCityCase(repository)
+
+    @Singleton
+    @Provides
+    fun provideCityUseCases(
+        getLocalCityCase: GetLocalCityCase,
+        updateLocalCityCase: UpdateLocalCutyCase,
+        addLocalCityCase: AddLocalCityCase,
+        deleteLocalCityCase: DeleteLocalCityCase
+    ) = CityUseCases(getLocalCityCase, updateLocalCityCase, addLocalCityCase, deleteLocalCityCase)
+}

@@ -1,12 +1,13 @@
 package com.example.weatherapp.ui.screen.detail
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import androidx.lifecycle.*
+import com.example.weatherapp.data.local.Weather
 import com.example.weatherapp.data.local.repository.LocalRepository
 import com.example.weatherapp.data.model.getOneCity.GetOneCity
 import com.example.weatherapp.data.remote.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -22,6 +23,13 @@ class DetailViewModel @Inject constructor(
     fun getCity(query: String) {
         viewModelScope.launch {
             oneCity.value = repository.getOneCity(query)
+        }
+    }
+
+    fun updateLocalData(city: Weather) {
+        viewModelScope.launch {
+            localRepository.updateWeather(city)
+            Log.d("detailViewModel", "обновление бд")
         }
     }
 }

@@ -5,6 +5,7 @@ import com.example.weatherapp.data.remote.api.RetrofitInstance
 import com.example.weatherapp.data.model.getOneCity.GetOneCity
 import com.example.weatherapp.data.model.search.Search
 import com.example.weatherapp.data.model.search.SearchItem
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 class WeatherRepository {

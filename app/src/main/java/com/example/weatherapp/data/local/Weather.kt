@@ -14,4 +14,5 @@ data class Weather (
     @ColumnInfo(name = "degree")val degree: Double,
     @ColumnInfo(name = "condition")val condition: String,
     @ColumnInfo(name = "location")val location: String,
+    @ColumnInfo(name = "main")val main: Boolean = false,
 ): Parcelable

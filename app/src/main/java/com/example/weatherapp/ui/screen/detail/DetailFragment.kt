@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.example.weatherapp.data.local.Weather
 import com.example.weatherapp.databinding.FragmentDetailBinding
 import com.example.weatherapp.utils.NetworkState
 import com.example.weatherapp.utils.showShackBarNoInternetConnection
@@ -44,6 +46,16 @@ class DetailFragment : Fragment() {
                         binding.textDegree.text = it.current.temp_c.toCelsiusString()
                         binding.textStatus.text = it.current.condition.text
                         binding.tollBar.textLocatoin.text = it.location.name
+                    }
+                }
+
+                binding.tollBar.favouriteButton.setOnClickListener {
+                    viewModel.oneCity.observe(viewLifecycleOwner) {date ->
+                        date?.body()?.let {
+                            val local = Weather(1, it.current.temp_c, it.current.condition.text, it.location.name)
+                           viewModel.updateLocalData(local)
+                        }
+                        Toast.makeText(context, "Добавленно на главный экран", Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {

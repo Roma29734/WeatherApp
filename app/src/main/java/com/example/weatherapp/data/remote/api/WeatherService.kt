@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.weatherapp.data.model.getOneCity.GetOneCity
 import com.example.weatherapp.data.model.search.Search
 import com.example.weatherapp.data.model.search.SearchItem
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
