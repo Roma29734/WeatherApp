@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.example.weatherapp.data.local.Weather
 import com.example.weatherapp.data.local.repository.LocalRepository
 import com.example.weatherapp.data.model.getOneCity.GetOneCity
+import com.example.weatherapp.data.model.getSevenDayCity.SevenDayForeCast
 import com.example.weatherapp.data.remote.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -18,11 +19,11 @@ class DetailViewModel @Inject constructor(
     private val localRepository: LocalRepository,
 ): ViewModel() {
 
-    val oneCity: MutableLiveData<Response<GetOneCity>> = MutableLiveData()
+    val oneCity: MutableLiveData<Response<SevenDayForeCast>> = MutableLiveData()
 
     fun getCity(query: String) {
         viewModelScope.launch {
-            oneCity.value = repository.getOneCity(query)
+            oneCity.value = repository.getSevenDayCity(query)
         }
     }
 

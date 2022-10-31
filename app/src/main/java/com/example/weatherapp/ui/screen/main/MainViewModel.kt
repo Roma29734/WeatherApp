@@ -53,7 +53,7 @@ class MainViewModel @Inject constructor(
     fun getWeatherConnectYes() {
         viewModelScope.launch(Dispatchers.IO) {
             _mainState.value.selectedCity?.let { city ->
-                val receivedData = repository.getOneCity(city.location).body()
+                val receivedData = repository.getSevenDayCity(city.location).body()
                 _mainState.update { it.copy(loadState = LoadState.SUCCESS, successState = receivedData) }
                 val update = receivedData?.let { Weather(1, it.current.temp_c, it.current.condition.text, it.location.name, true) }
                 update?.let { cityUseCases.updateLocalCityCase(it) }

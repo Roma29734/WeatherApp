@@ -1,5 +1,6 @@
 package com.example.weatherapp.ui.screen.main
 
+import android.net.Network
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -28,7 +29,7 @@ class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-
+    private val adapter = MainAdapter()
     private lateinit var Network: NetworkState
     private val viewModel by viewModels<MainViewModel>()
 
@@ -39,6 +40,7 @@ class MainFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         Network = context?.let { NetworkState(it) }!!
+        binding.recyclerWeatherToday.adapter = adapter
         return binding.root
     }
 
@@ -66,7 +68,12 @@ class MainFragment : Fragment() {
                                     Toast.makeText(context, "Идет загрузка", Toast.LENGTH_SHORT).show()
                                 }
                                 LoadState.SUCCESS ->{
-                                    uiState.successState?.let { setUiOk(it.location.name, it.current.condition.text, it.current.temp_c, it.current.feelslike_c, it.current.wind_kph) }
+                                    uiState.successState?.let {
+                                        setUiOk(it.location.name, it.current.condition.text,
+                                            it.current.temp_c, it.current.feelslike_c,
+                                            it.current.wind_kph, it.forecast.forecastday[0].astro.sunrise, it.forecast.forecastday[0].astro.sunset)
+                                        adapter.setTodayWeather(it.forecast.forecastday[0].hour)
+                                    }
 
                                 }
                                 LoadState.ERROR -> TODO()
@@ -96,13 +103,17 @@ class MainFragment : Fragment() {
         binding.textDegree.text = temp.toCelsiusString()
     }
 
-    fun setUiOk(textLocation: String, textStatus: String, temp: Double, liveDegree: Double, wind: Double) {
+    fun setUiOk(
+        textLocation: String, textStatus: String,
+        temp: Double, liveDegree: Double, wind: Double,
+        sunRice: String, sunSet: String,
+    ) {
         binding.tollBar.textLocatoin.text = textLocation
         binding.textStatus.text = textStatus
         binding.textDegree.text = temp.toCelsiusString()
         binding.newsOfTheDay.textLive.text = liveDegree.toCelsiusString()
         binding.newsOfTheDay.textWind.text = wind.toString()
-        binding.newsOfTheDay.textSunRice.text = "7.00"
-        binding.newsOfTheDay.textSunSet.text = "19.00"
+        binding.newsOfTheDay.textSunRice.text = sunRice
+        binding.newsOfTheDay.textSunSet.text = sunSet
     }
 }

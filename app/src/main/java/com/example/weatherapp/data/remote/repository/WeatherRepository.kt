@@ -1,11 +1,9 @@
 package com.example.weatherapp.data.remote.repository
 
-import androidx.lifecycle.LiveData
 import com.example.weatherapp.data.remote.api.RetrofitInstance
 import com.example.weatherapp.data.model.getOneCity.GetOneCity
+import com.example.weatherapp.data.model.getSevenDayCity.SevenDayForeCast
 import com.example.weatherapp.data.model.search.Search
-import com.example.weatherapp.data.model.search.SearchItem
-import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 class WeatherRepository {
@@ -15,5 +13,9 @@ class WeatherRepository {
 
     suspend fun searchCity(city: String): Response<Search> {
         return RetrofitInstance.api.searchCity(city)
+    }
+
+    suspend fun getSevenDayCity(city: String): Response<SevenDayForeCast> {
+        return RetrofitInstance.api.getSevenDayCity(city, 7)
     }
 }

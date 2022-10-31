@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textLocatoin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textLocatoin"
-        app:srcCompat="@drawable/ic_search" />
+        app:srcCompat="@drawable/ic_search"/>
 
     <TextView
         android:id="@+id/textView"

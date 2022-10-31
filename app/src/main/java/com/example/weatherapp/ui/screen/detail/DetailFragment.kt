@@ -46,6 +46,10 @@ class DetailFragment : Fragment() {
                         binding.textDegree.text = it.current.temp_c.toCelsiusString()
                         binding.textStatus.text = it.current.condition.text
                         binding.tollBar.textLocatoin.text = it.location.name
+                        binding.newsOfTheDay.textLive.text = it.current.feelslike_c.toCelsiusString()
+                        binding.newsOfTheDay.textWind.text = it.current.wind_kph.toString()
+                        binding.newsOfTheDay.textSunRice.text = it.forecast.forecastday[0].astro.sunrise
+                        binding.newsOfTheDay.textSunSet.text = it.forecast.forecastday[0].astro.sunset
                     }
                 }
 
