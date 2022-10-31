@@ -100,8 +100,8 @@ class MainFragment : Fragment() {
         binding.tollBar.textLocatoin.text = textLocation
         binding.textStatus.text = textStatus
         binding.textDegree.text = temp.toCelsiusString()
-        binding.newsOfTheDay.textLiveDegree.text = liveDegree.toCelsiusString()
-        binding.newsOfTheDay.textSpeedWind.text = wind.toString()
+        binding.newsOfTheDay.textLive.text = liveDegree.toCelsiusString()
+        binding.newsOfTheDay.textWind.text = wind.toString()
         binding.newsOfTheDay.textSunRice.text = "7.00"
         binding.newsOfTheDay.textSunSet.text = "19.00"
     }

@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.screen.search.SearchFragment">
+    tools:context=".ui.screen.search.SearchFragment"
+    android:background="@color/mainColor">
 
     <include
         android:id="@+id/tabBarSearch"
         layout="@layout/tab_up_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

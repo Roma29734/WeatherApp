@@ -26,8 +26,10 @@
         android:iconifiedByDefault="false"
         android:queryBackground="@android:color/transparent"
         android:queryHint="Ишите свои заметки"
+        android:searchIcon="@drawable/ic_search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/SearchViewStyle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

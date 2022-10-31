@@ -8,5 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="cardColor">#140F37</color>
-    <color name="Grey">#2C2C2C</color>
+    <color name="Grey">#646366</color>
+    <color name="mainColor">#1B1D1F</color>
+    <color name="secondColor">#202329</color>
 </resources>
