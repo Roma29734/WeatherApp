@@ -1,4 +1,4 @@
-package com.example.weatherapp.ui.screen.main
+package com.example.weatherapp.ui.screen.detail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import com.example.weatherapp.data.model.getSevenDayCity.Hour
 import com.example.weatherapp.databinding.CardWeatherTodayBinding
 import com.example.weatherapp.utils.toCelsiusString
 
-class MainAdapter: RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
+class DetailDayAdapter: RecyclerView.Adapter<DetailDayAdapter.MyViewHolder>() {
 
     private var listTodayWeather = emptyList<Hour>()
 

@@ -41,12 +41,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:fontFamily="@font/lato_black"
                 android:text="Скорость ветра"
                 android:textColor="@color/Grey"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -76,11 +78,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_marginTop="8dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
                 android:fontFamily="@font/lato_black"
                 android:text="Восход солнца"
                 android:textColor="@color/Grey"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -110,11 +115,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_marginTop="8dp"
+                android:layout_marginStart="13dp"
+                android:layout_marginEnd="13dp"
                 android:fontFamily="@font/lato_black"
                 android:text="Закат солнца"
                 android:textColor="@color/Grey"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -144,11 +152,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:fontFamily="@font/lato_black"
                 android:text="ощущается как"
                 android:textColor="@color/Grey"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,6 +30,7 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val adapter = MainAdapter()
+    private val adapterSevenDeay = MainAdapterSevenDeay()
     private lateinit var Network: NetworkState
     private val viewModel by viewModels<MainViewModel>()
 
@@ -41,6 +42,7 @@ class MainFragment : Fragment() {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         Network = context?.let { NetworkState(it) }!!
         binding.recyclerWeatherToday.adapter = adapter
+        binding.recyclerSevenDayWeather.adapter = adapterSevenDeay
         return binding.root
     }
 
@@ -73,8 +75,8 @@ class MainFragment : Fragment() {
                                             it.current.temp_c, it.current.feelslike_c,
                                             it.current.wind_kph, it.forecast.forecastday[0].astro.sunrise, it.forecast.forecastday[0].astro.sunset)
                                         adapter.setTodayWeather(it.forecast.forecastday[0].hour)
+                                        adapterSevenDeay.setSevenDay(it.forecast.forecastday)
                                     }
-
                                 }
                                 LoadState.ERROR -> TODO()
                             }

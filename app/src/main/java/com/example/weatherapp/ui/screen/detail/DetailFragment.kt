@@ -24,6 +24,8 @@ class DetailFragment : Fragment() {
     private val args by navArgs<DetailFragmentArgs>()
     private val viewModel by viewModels<DetailViewModel>()
     private lateinit var Network: NetworkState
+    private val dayAdapter = DetailDayAdapter()
+    private val sevenDayAdapter = DetailSevenDayAdapter()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,6 +33,8 @@ class DetailFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentDetailBinding.inflate(inflater, container, false)
         Network = context?.let { NetworkState(it) }!!
+        binding.recyclerWeatherDay.adapter = dayAdapter
+        binding.recyclerSevenDayWeather.adapter = sevenDayAdapter
         return binding.root
     }
 
@@ -50,6 +54,8 @@ class DetailFragment : Fragment() {
                         binding.newsOfTheDay.textWind.text = it.current.wind_kph.toString()
                         binding.newsOfTheDay.textSunRice.text = it.forecast.forecastday[0].astro.sunrise
                         binding.newsOfTheDay.textSunSet.text = it.forecast.forecastday[0].astro.sunset
+                        dayAdapter.setTodayWeather(it.forecast.forecastday[0].hour)
+                        sevenDayAdapter.setSevenDay(it.forecast.forecastday)
                     }
                 }
 
