@@ -42,7 +42,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             cityUseCases.getLocalCityCase.invoke().collect {cities ->
                 if(cities.isEmpty()) {
-                    cityUseCases.addLocalCityCase(Weather(1, 35.0, "state", "Москва", true))
+                    cityUseCases.addLocalCityCase(Weather(0, 35.0, "state", "Москва", true))
                 }
                 val selectedCity = cities.first()
                 _mainState.update { it.copy(savedCity = cities, selectedCity = selectedCity) }

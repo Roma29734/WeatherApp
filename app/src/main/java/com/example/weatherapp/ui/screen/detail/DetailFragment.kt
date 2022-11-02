@@ -20,7 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
 
-    lateinit var binding: FragmentDetailBinding
+    private var _binding: FragmentDetailBinding? = null
+    private val binding get() = _binding!!
     private val args by navArgs<DetailFragmentArgs>()
     private val viewModel by viewModels<DetailViewModel>()
     private lateinit var Network: NetworkState
@@ -31,7 +32,7 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentDetailBinding.inflate(inflater, container, false)
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
         Network = context?.let { NetworkState(it) }!!
         binding.recyclerWeatherDay.adapter = dayAdapter
         binding.recyclerSevenDayWeather.adapter = sevenDayAdapter
@@ -62,10 +63,10 @@ class DetailFragment : Fragment() {
                 binding.tollBar.favouriteButton.setOnClickListener {
                     viewModel.oneCity.observe(viewLifecycleOwner) {date ->
                         date?.body()?.let {
-                            val local = Weather(1, it.current.temp_c, it.current.condition.text, it.location.name)
-                           viewModel.updateLocalData(local)
+                            val local = Weather(0, it.current.temp_c, it.current.condition.text, it.location.name, false)
+                           viewModel.addFavData(local)
                         }
-                        Toast.makeText(context, "Добавленно на главный экран", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Добавленно в избранное", Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {
@@ -76,5 +77,10 @@ class DetailFragment : Fragment() {
         binding.tollBar.imageButton.setOnClickListener {
             Navigation.findNavController(view).popBackStack()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

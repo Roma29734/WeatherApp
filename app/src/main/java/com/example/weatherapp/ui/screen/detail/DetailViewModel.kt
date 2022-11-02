@@ -7,6 +7,7 @@ import com.example.weatherapp.data.local.repository.LocalRepository
 import com.example.weatherapp.data.model.getOneCity.GetOneCity
 import com.example.weatherapp.data.model.getSevenDayCity.SevenDayForeCast
 import com.example.weatherapp.data.remote.repository.WeatherRepository
+import com.example.weatherapp.domain.CityUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val repository: WeatherRepository,
     private val localRepository: LocalRepository,
+    private val cityUseCases: CityUseCases,
 ): ViewModel() {
 
     val oneCity: MutableLiveData<Response<SevenDayForeCast>> = MutableLiveData()
@@ -31,6 +33,12 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             localRepository.updateWeather(city)
             Log.d("detailViewModel", "обновление бд")
+        }
+    }
+
+    fun addFavData(city: Weather) {
+        viewModelScope.launch {
+            cityUseCases.addLocalCityCase(city)
         }
     }
 }

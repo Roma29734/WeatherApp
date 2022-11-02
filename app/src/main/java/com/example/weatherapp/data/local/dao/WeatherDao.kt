@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WeatherDao {
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addWeather(weather: Weather)
 

@@ -12,12 +12,12 @@
         android:id="@+id/textLocatoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/lato_black"
         android:textColor="@color/white"
         android:textSize="23sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Дубай" />
@@ -37,13 +37,25 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/lato_bold"
         android:text="12 октября"
         android:textColor="@color/Grey"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textLocatoin"
         app:layout_constraintStart_toStartOf="@+id/textLocatoin"
-        app:layout_constraintTop_toBottomOf="@+id/textLocatoin"
-        android:fontFamily="@font/lato_bold"
-        android:textSize="15sp"/>
+        app:layout_constraintTop_toBottomOf="@+id/textLocatoin" />
+
+    <ImageView
+        android:id="@+id/burger_img"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="32dp"
+        android:onClick="@{main}"
+        app:layout_constraintBottom_toBottomOf="@+id/textLocatoin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textLocatoin"
+        app:srcCompat="@drawable/ic_burger" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -88,16 +88,13 @@ class MainFragment : Fragment() {
                 showShackBarNoInternetConnection(view)
             }
         }
-        _binding!!.tollBar.searchImg.setOnClickListener {
+        binding.tollBar.searchImg.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_searchFragment)
         }
+        binding.tollBar.burgerImg.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_favouriteFragment)
+        }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
 
     fun setUi(textLocation: String, textStatus: String, temp: Double) {
         binding.tollBar.textLocatoin.text = textLocation
@@ -117,5 +114,10 @@ class MainFragment : Fragment() {
         binding.newsOfTheDay.textWind.text = wind.toString()
         binding.newsOfTheDay.textSunRice.text = sunRice
         binding.newsOfTheDay.textSunSet.text = sunSet
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

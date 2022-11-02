@@ -15,11 +15,12 @@ class LocalRepositortImpl @Inject constructor(
 
     override suspend fun addWeather(weather: Weather) {
         dao.addWeather(weather)
+        Log.d("repositoryLocal","добавил в избранное")
     }
 
     override suspend fun updateWeather(weather: Weather) {
         dao.updateLocal(weather)
-        Log.d("repasitoryLocal","Вызвал обновление данных")
+        Log.d("repositoryLocal","Вызвал обновление данных")
     }
 
     override suspend fun deleteWeather(weather: Weather) {
