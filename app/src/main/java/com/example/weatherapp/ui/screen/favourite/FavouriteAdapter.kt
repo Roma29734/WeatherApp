@@ -22,7 +22,6 @@ class FavouriteAdapter: RecyclerView.Adapter<FavouriteAdapter.MyViewHolder>() {
         val lisstPositions = listFavouriteCity[position]
 
         holder.binding.textName.text = lisstPositions.location
-        holder.binding.textDegree.text = lisstPositions.degree.toCelsiusString()
     }
 
     override fun getItemCount(): Int {

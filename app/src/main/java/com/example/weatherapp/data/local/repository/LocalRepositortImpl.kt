@@ -26,4 +26,8 @@ class LocalRepositortImpl @Inject constructor(
     override suspend fun deleteWeather(weather: Weather) {
         dao.deleteCity(weather)
     }
+
+    override suspend fun updateMainCity(weather: Weather) {
+        dao.updateSelectedCity(weather.id)
+    }
 }

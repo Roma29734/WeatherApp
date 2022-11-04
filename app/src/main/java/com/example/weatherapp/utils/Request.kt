@@ -1,7 +1,8 @@
 package com.example.weatherapp.utils
 
-sealed class Request<T> {
-    class Loading<T> : Request<T>()
-    data class Success<T>(internal val data: T) : Request<T>()
-    data class Error<T>(internal val error: Throwable?) : Request<T>()
+
+sealed class Request<out R> {
+    object Loading : Request<Nothing>()
+    data class Success<out R>(internal val data: R) : Request<R>()
+    data class Error(internal val error: Throwable?) : Request<Nothing>()
 }

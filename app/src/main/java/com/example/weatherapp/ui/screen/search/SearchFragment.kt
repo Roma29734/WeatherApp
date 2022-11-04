@@ -17,7 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
 
-    lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
     private val viewModel by viewModels<SearchViewModel>()
     private val adapter = SearchAdapter()
     private lateinit var Network: NetworkState
@@ -26,7 +27,7 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         binding.recyclerSearch.adapter = adapter
         binding.recyclerSearch.layoutManager = LinearLayoutManager(requireContext())
         Network = context?.let { NetworkState(it) }!!
@@ -35,7 +36,6 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         Network.observe(viewLifecycleOwner) {state->
             if(state) {
@@ -68,5 +68,4 @@ class SearchFragment : Fragment() {
         }
 
     }
-
 }

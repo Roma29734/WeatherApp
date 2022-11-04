@@ -1,10 +1,10 @@
 package com.example.weatherapp.data.remote.api
 
 import androidx.lifecycle.LiveData
-import com.example.weatherapp.data.model.getOneCity.GetOneCity
 import com.example.weatherapp.data.model.getSevenDayCity.SevenDayForeCast
 import com.example.weatherapp.data.model.search.Search
 import com.example.weatherapp.data.model.search.SearchItem
+import com.example.weatherapp.utils.Request
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,11 +16,6 @@ interface WeatherService {
 //    http://api.weatherapi.com/v1/current.json?key=7d7a314cf65f42b1884135900222610&q=London
 //    https://api.weatherapi.com/v1/search.json?key=7d7a314cf65f42b1884135900222610&q=%D0%A1%D0%B0%D0%BD%D0%BA
 //    http://api.weatherapi.com/v1/forecast.json?key=7d7a314cf65f42b1884135900222610&q=London&days=7
-    @GET("v1/current.json?key=7d7a314cf65f42b1884135900222610")
-    suspend fun getOneCity(
-        @Query ("q") city: String
-    ): Response<GetOneCity>
-
     @GET("v1/search.json?key=7d7a314cf65f42b1884135900222610")
     suspend fun searchCity(
         @Query ("q") city: String

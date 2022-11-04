@@ -1,6 +1,5 @@
 package com.example.weatherapp.ui.screen.main
 
-import android.net.Network
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -12,17 +11,16 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentMainBinding
+import com.example.weatherapp.ui.view.ListFeaturedCities
 import com.example.weatherapp.utils.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.weatherapp.utils.NetworkState
 import com.example.weatherapp.utils.showShackBarNoInternetConnection
 import com.example.weatherapp.utils.toCelsiusString
-import kotlinx.android.synthetic.main.card_search_row.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.util.*
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -59,17 +57,16 @@ class MainFragment : Fragment() {
 
         Network.observe(viewLifecycleOwner) {state ->
             if(state) {
-                _binding!!.progressBar.visibility = View.INVISIBLE
-
                 viewModel.getWeatherConnectYes()
                 lifecycleScope.launch {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         viewModel.mainState.collectLatest { uiState ->
                             when(uiState.loadState) {
                                 LoadState.LOADING -> {
-                                    Toast.makeText(context, "Идет загрузка", Toast.LENGTH_SHORT).show()
+                                    binding.progressBar.visibility = View.VISIBLE
                                 }
                                 LoadState.SUCCESS ->{
+                                    binding.progressBar.visibility = View.INVISIBLE
                                     uiState.successState?.let {
                                         setUiOk(it.location.name, it.current.condition.text,
                                             it.current.temp_c, it.current.feelslike_c,
@@ -78,7 +75,9 @@ class MainFragment : Fragment() {
                                         adapterSevenDeay.setSevenDay(it.forecast.forecastday)
                                     }
                                 }
-                                LoadState.ERROR -> TODO()
+                                LoadState.ERROR -> {
+                                    Toast.makeText(context, "Возникла ошибка, перезагрузите приложение", Toast.LENGTH_SHORT).show()
+                                }
                             }
                         }
                     } }
@@ -92,7 +91,9 @@ class MainFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_searchFragment)
         }
         binding.tollBar.burgerImg.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_favouriteFragment)
+//            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_favouriteFragment)
+            val bottomSheet = ListFeaturedCities(viewModel::getWeatherConnectYes)
+            bottomSheet.show(childFragmentManager, ListFeaturedCities.BOTTOM_SHEET_CITIES_TAG)
         }
     }
 

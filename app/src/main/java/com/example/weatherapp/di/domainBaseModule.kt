@@ -4,10 +4,7 @@ import com.example.weatherapp.data.local.repository.LocalRepository
 import com.example.weatherapp.data.remote.repository.WeatherRepository
 import com.example.weatherapp.domain.CityUseCases
 import com.example.weatherapp.domain.WeatherUseCases
-import com.example.weatherapp.domain.cityUserCase.AddLocalCityCase
-import com.example.weatherapp.domain.cityUserCase.DeleteLocalCityCase
-import com.example.weatherapp.domain.cityUserCase.GetLocalCityCase
-import com.example.weatherapp.domain.cityUserCase.UpdateLocalCutyCase
+import com.example.weatherapp.domain.cityUserCase.*
 import com.example.weatherapp.domain.weatherUseCases.GetWeather
 import dagger.Module
 import dagger.Provides
@@ -31,7 +28,7 @@ class domainBaseModule {
 
     @Singleton
     @Provides
-    fun provideUpdateLocalCutyCase(repository: LocalRepository) = UpdateLocalCutyCase(repository)
+    fun provideUpdateLocalCityCase(repository: LocalRepository) = UpdateLocalCutyCase(repository)
 
     @Singleton
     @Provides
@@ -43,10 +40,15 @@ class domainBaseModule {
 
     @Singleton
     @Provides
+    fun provideUpdateSelectedCity(repository: LocalRepository) = UpdateSelectedCityCase(repository)
+
+    @Singleton
+    @Provides
     fun provideCityUseCases(
         getLocalCityCase: GetLocalCityCase,
         updateLocalCityCase: UpdateLocalCutyCase,
         addLocalCityCase: AddLocalCityCase,
-        deleteLocalCityCase: DeleteLocalCityCase
-    ) = CityUseCases(getLocalCityCase, updateLocalCityCase, addLocalCityCase, deleteLocalCityCase)
+        deleteLocalCityCase: DeleteLocalCityCase,
+        updateSelectedCityCase: UpdateSelectedCityCase
+    ) = CityUseCases(getLocalCityCase, updateLocalCityCase, addLocalCityCase, deleteLocalCityCase, updateSelectedCityCase)
 }

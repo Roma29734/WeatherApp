@@ -26,12 +26,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val cityUseCases: CityUseCases,
-    private val weatherUseCases: WeatherUseCases,
-    private val repository: WeatherRepository
+    private val repository: WeatherRepository,
 ): ViewModel() {
 
-    val oneCity: MutableLiveData<Response<GetOneCity>> = MutableLiveData()
-    var localCity: MutableLiveData<Weather> = MutableLiveData()
     private var getWeatherJob: Job? = null
 
     private var _mainState = MutableStateFlow(MainState())
@@ -44,20 +41,27 @@ class MainViewModel @Inject constructor(
                 if(cities.isEmpty()) {
                     cityUseCases.addLocalCityCase(Weather(0, 35.0, "state", "Москва", true))
                 }
-                val selectedCity = cities.first()
+                val selectedCity = cities.first {it.main}
+                Log.d("mainViewModel",selectedCity.location)
                 _mainState.update { it.copy(savedCity = cities, selectedCity = selectedCity) }
             }
         }
     }
 
     fun getWeatherConnectYes() {
-        viewModelScope.launch(Dispatchers.IO) {
+        getWeatherJob?.cancel()
+        getWeatherJob = viewModelScope.launch(Dispatchers.IO) {
             _mainState.value.selectedCity?.let { city ->
-                val receivedData = repository.getSevenDayCity(city.location).body()
-                _mainState.update { it.copy(loadState = LoadState.SUCCESS, successState = receivedData) }
-                val update = receivedData?.let { Weather(1, it.current.temp_c, it.current.condition.text, it.location.name, true) }
-                update?.let { cityUseCases.updateLocalCityCase(it) }
-                _mainState.update { it.copy() }
+                _mainState.update { it.copy(loadState = LoadState.LOADING) }
+                val receivedData = repository.getSevenDayCity(city.location)
+                if(receivedData.isSuccessful) {
+                    _mainState.update { it.copy(loadState = LoadState.SUCCESS, successState = receivedData.body()) }
+                    val update = receivedData.body()?.let { Weather(1, it.current.temp_c, it.current.condition.text, it.location.name, true) }
+                    Log.d("mainViewModel","обновлены данные")
+                    update?.let { cityUseCases.updateLocalCityCase(it) }
+                } else {
+                    _mainState.update { it.copy(loadState = LoadState.ERROR) }
+                }
                 Log.d("mainViewModel","вызвано getWeatherConnectYes")
             }
         }

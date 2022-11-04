@@ -11,4 +11,6 @@ interface LocalRepository {
     suspend fun updateWeather(weather: Weather)
 
     suspend fun deleteWeather(weather: Weather)
+
+    suspend fun updateMainCity(weather: Weather)
 }

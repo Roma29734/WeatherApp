@@ -18,4 +18,16 @@ interface WeatherDao {
 
     @Delete
     suspend fun deleteCity(city: Weather)
+
+    @Query("UPDATE weather_table SET main = 0 WHERE id != :id")
+    fun setUnselected(id: Int)
+
+    @Query("UPDATE weather_table SET main = 1 WHERE id = :id")
+    fun setSelected(id: Int)
+
+    @Transaction
+    suspend fun updateSelectedCity(id: Int) {
+        setUnselected(id)
+        setSelected(id)
+    }
 }
