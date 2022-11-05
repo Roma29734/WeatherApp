@@ -12,7 +12,6 @@
         android:id="@+id/textLocatoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:fontFamily="@font/lato_black"
         android:textColor="@color/white"
         android:textSize="23sp"
@@ -22,23 +21,10 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Дубай" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/lato_bold"
-        android:text="12 октября"
-        android:textColor="@color/Grey"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textLocatoin"
-        app:layout_constraintStart_toStartOf="@+id/textLocatoin"
-        app:layout_constraintTop_toBottomOf="@+id/textLocatoin" />
-
     <ImageButton
         android:id="@+id/imageButton"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_back_arrow"
@@ -48,14 +34,14 @@
 
     <ImageButton
         android:id="@+id/favourite_button"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_favourite_set"
-        android:background="@android:color/transparent"/>
+        app:srcCompat="@drawable/ic_favourite_set" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

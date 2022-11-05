@@ -3,4 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_internet">Нет интернета</string>
+    <string name="text_forecast_for_today">Прогноз на сегодня</string>
+    <string name="text_forecast_for_seven_day">Прогноз на 7 дней</string>
+    <string name="text_search">Поиск</string>
 </resources>

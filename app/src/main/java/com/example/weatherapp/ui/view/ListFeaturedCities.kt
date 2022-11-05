@@ -51,8 +51,8 @@ class ListFeaturedCities(
         const val BOTTOM_SHEET_CITIES_TAG = "BOTTOM_SHEET_CITIES"
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 }

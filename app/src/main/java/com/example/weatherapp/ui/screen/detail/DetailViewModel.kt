@@ -4,12 +4,10 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.weatherapp.data.local.Weather
 import com.example.weatherapp.data.local.repository.LocalRepository
-import com.example.weatherapp.data.model.getOneCity.GetOneCity
 import com.example.weatherapp.data.model.getSevenDayCity.SevenDayForeCast
 import com.example.weatherapp.data.remote.repository.WeatherRepository
 import com.example.weatherapp.domain.CityUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject

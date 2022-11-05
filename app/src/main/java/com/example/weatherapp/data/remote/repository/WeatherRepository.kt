@@ -1,10 +1,8 @@
 package com.example.weatherapp.data.remote.repository
 
-import android.util.Log
 import com.example.weatherapp.data.remote.api.RetrofitInstance
 import com.example.weatherapp.data.model.getSevenDayCity.SevenDayForeCast
 import com.example.weatherapp.data.model.search.Search
-import com.example.weatherapp.utils.Request
 import retrofit2.Response
 
 class WeatherRepository {

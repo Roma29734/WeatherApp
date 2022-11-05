@@ -3,9 +3,7 @@ package com.example.weatherapp.di
 import com.example.weatherapp.data.local.repository.LocalRepository
 import com.example.weatherapp.data.remote.repository.WeatherRepository
 import com.example.weatherapp.domain.CityUseCases
-import com.example.weatherapp.domain.WeatherUseCases
 import com.example.weatherapp.domain.cityUserCase.*
-import com.example.weatherapp.domain.weatherUseCases.GetWeather
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,12 +13,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 class domainBaseModule {
-
-    @Provides
-    fun provideGetWeather(repository: WeatherRepository) = GetWeather(repository)
-
-    @Provides
-    fun provideWeatherUseCases(getWeather: GetWeather) = WeatherUseCases(getWeather)
 
     @Singleton
     @Provides

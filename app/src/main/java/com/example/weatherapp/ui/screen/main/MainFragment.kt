@@ -17,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.example.weatherapp.utils.NetworkState
 import com.example.weatherapp.utils.showShackBarNoInternetConnection
 import com.example.weatherapp.utils.toCelsiusString
+import kotlinx.android.synthetic.main.card_search_row.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -28,25 +29,26 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val adapter = MainAdapter()
-    private val adapterSevenDeay = MainAdapterSevenDeay()
-    private lateinit var Network: NetworkState
+    private val adapterSevenDay = MainAdapterSevenDeay()
+    private val network by lazy { context?.let { NetworkState(it) } }
     private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentMainBinding.inflate(inflater, container, false)
-        Network = context?.let { NetworkState(it) }!!
-        binding.recyclerWeatherToday.adapter = adapter
-        binding.recyclerSevenDayWeather.adapter = adapterSevenDeay
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        настройка ресайкла
+        binding.recyclerWeatherToday.adapter = adapter
+        binding.recyclerSevenDayWeather.adapter = adapterSevenDay
 
+//        Получение локальных данных, и установка
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.mainState.map { it.selectedCity }.distinctUntilChanged().collectLatest {
@@ -55,54 +57,70 @@ class MainFragment : Fragment() {
             }
         }
 
-        Network.observe(viewLifecycleOwner) {state ->
-            if(state) {
+        network?.observe(viewLifecycleOwner) { state ->
+            if (state) {
+//                Получение данных с api и установка их
                 viewModel.getWeatherConnectYes()
                 lifecycleScope.launch {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         viewModel.mainState.collectLatest { uiState ->
-                            when(uiState.loadState) {
+//                            обработка состояния загрузки
+                            when (uiState.loadState) {
                                 LoadState.LOADING -> {
                                     binding.progressBar.visibility = View.VISIBLE
                                 }
-                                LoadState.SUCCESS ->{
+                                LoadState.SUCCESS -> {
                                     binding.progressBar.visibility = View.INVISIBLE
                                     uiState.successState?.let {
-                                        setUiOk(it.location.name, it.current.condition.text,
-                                            it.current.temp_c, it.current.feelslike_c,
-                                            it.current.wind_kph, it.forecast.forecastday[0].astro.sunrise, it.forecast.forecastday[0].astro.sunset)
+                                        setUiOk(
+                                            it.location.name,
+                                            it.current.condition.text,
+                                            it.current.temp_c,
+                                            it.current.feelslike_c,
+                                            it.current.wind_kph,
+                                            it.forecast.forecastday[0].astro.sunrise,
+                                            it.forecast.forecastday[0].astro.sunset
+                                        )
                                         adapter.setTodayWeather(it.forecast.forecastday[0].hour)
-                                        adapterSevenDeay.setSevenDay(it.forecast.forecastday)
+                                        adapterSevenDay.setSevenDay(it.forecast.forecastday)
                                     }
                                 }
                                 LoadState.ERROR -> {
-                                    Toast.makeText(context, "Возникла ошибка, перезагрузите приложение", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        "Возникла ошибка, перезагрузите приложение",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                         }
-                    } }
+                    }
+                }
 
             } else {
+//                Установка состояния загрузки при отсутствии интернета
                 _binding!!.progressBar.visibility = View.VISIBLE
                 showShackBarNoInternetConnection(view)
             }
         }
+
+
+//        Прослушиватель кнопок для навигации
         binding.tollBar.searchImg.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_searchFragment)
         }
         binding.tollBar.burgerImg.setOnClickListener {
-//            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_favouriteFragment)
             val bottomSheet = ListFeaturedCities(viewModel::getWeatherConnectYes)
             bottomSheet.show(childFragmentManager, ListFeaturedCities.BOTTOM_SHEET_CITIES_TAG)
         }
     }
-
+//    Установка ui с локальной базы данных
     fun setUi(textLocation: String, textStatus: String, temp: Double) {
         binding.tollBar.textLocatoin.text = textLocation
         binding.textStatus.text = textStatus
         binding.textDegree.text = temp.toCelsiusString()
     }
-
+//    Установка ui с полными данными
     fun setUiOk(
         textLocation: String, textStatus: String,
         temp: Double, liveDegree: Double, wind: Double,
@@ -117,8 +135,8 @@ class MainFragment : Fragment() {
         binding.newsOfTheDay.textSunSet.text = sunSet
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 }

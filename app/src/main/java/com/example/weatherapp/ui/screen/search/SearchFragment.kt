@@ -1,5 +1,6 @@
 package com.example.weatherapp.ui.screen.search
 
+import android.net.Network
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,23 +22,23 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModels<SearchViewModel>()
     private val adapter = SearchAdapter()
-    private lateinit var Network: NetworkState
+    private val network by lazy { context?.let { NetworkState(it) } }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        binding.recyclerSearch.adapter = adapter
-        binding.recyclerSearch.layoutManager = LinearLayoutManager(requireContext())
-        Network = context?.let { NetworkState(it) }!!
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        Настройка ресайкла
+        binding.recyclerSearch.adapter = adapter
+        binding.recyclerSearch.layoutManager = LinearLayoutManager(requireContext())
 
-        Network.observe(viewLifecycleOwner) {state->
+        network?.observe(viewLifecycleOwner) {state->
             if(state) {
                 // Обрабатываю запрос в searchView
                 binding.progressBar.visibility = View.INVISIBLE
@@ -46,7 +47,6 @@ class SearchFragment : Fragment() {
                         p0?.let { viewModel.searchWeather(it) }
                         return false
                     }
-
                     override fun onQueryTextChange(p0: String?): Boolean {
                         p0?.let { viewModel.searchWeather(it) }
                         return false
@@ -67,5 +67,9 @@ class SearchFragment : Fragment() {
             }
         }
 
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -1,11 +1,7 @@
 package com.example.weatherapp.data.remote.api
 
-import androidx.lifecycle.LiveData
 import com.example.weatherapp.data.model.getSevenDayCity.SevenDayForeCast
 import com.example.weatherapp.data.model.search.Search
-import com.example.weatherapp.data.model.search.SearchItem
-import com.example.weatherapp.utils.Request
-import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

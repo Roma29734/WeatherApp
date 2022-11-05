@@ -1,25 +1,19 @@
 package com.example.weatherapp.ui.screen.main
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.local.Weather
-import com.example.weatherapp.data.local.repository.LocalRepository
-import com.example.weatherapp.data.model.getOneCity.GetOneCity
 import com.example.weatherapp.data.remote.repository.WeatherRepository
 import com.example.weatherapp.domain.CityUseCases
-import com.example.weatherapp.domain.WeatherUseCases
 import com.example.weatherapp.utils.LoadState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 

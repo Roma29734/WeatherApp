@@ -7,18 +7,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <include
         android:id="@+id/toll_bar"
         layout="@layout/tab_up_item"
         android:layout_width="0dp"
         android:layout_height="87dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -28,7 +24,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toll_bar">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -46,7 +41,6 @@
                 android:textColor="@color/white"
                 android:textSize="50sp"
                 app:layout_constraintStart_toStartOf="parent"
-
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="38°" />
 
@@ -105,7 +99,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/lato_bold"
-                android:text="Прогноз на сегодня"
+                android:text="@string/text_forecast_for_today"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +112,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/lato_bold"
-                android:text="Прогноз на 7 дней"
+                android:text="@string/text_forecast_for_seven_day"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"

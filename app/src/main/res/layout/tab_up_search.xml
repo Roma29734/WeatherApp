@@ -8,8 +8,8 @@
 
     <ImageButton
         android:id="@+id/imageButton"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_back_arrow"
@@ -25,7 +25,7 @@
         android:layout_marginEnd="16dp"
         android:iconifiedByDefault="false"
         android:queryBackground="@android:color/transparent"
-        android:queryHint="Ишите свои заметки"
+        android:queryHint="@string/text_search"
         android:searchIcon="@drawable/ic_search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

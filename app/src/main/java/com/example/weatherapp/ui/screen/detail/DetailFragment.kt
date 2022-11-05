@@ -1,6 +1,7 @@
 package com.example.weatherapp.ui.screen.detail
 
 
+import android.net.Network
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,25 +25,25 @@ class DetailFragment : Fragment() {
     private val binding get() = _binding!!
     private val args by navArgs<DetailFragmentArgs>()
     private val viewModel by viewModels<DetailViewModel>()
-    private lateinit var Network: NetworkState
+    private val network by lazy { context?.let { NetworkState(it) } }
     private val dayAdapter = DetailDayAdapter()
     private val sevenDayAdapter = DetailSevenDayAdapter()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
-        Network = context?.let { NetworkState(it) }!!
-        binding.recyclerWeatherDay.adapter = dayAdapter
-        binding.recyclerSevenDayWeather.adapter = sevenDayAdapter
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        Network.observe(viewLifecycleOwner) {state ->
+//        Установка ресайкла
+        binding.recyclerWeatherDay.adapter = dayAdapter
+        binding.recyclerSevenDayWeather.adapter = sevenDayAdapter
+        network?.observe(viewLifecycleOwner) {state ->
             if(state) {
                 binding.progressBar.visibility = View.INVISIBLE
                 viewModel.getCity(args.searchResult.url)
@@ -79,8 +80,8 @@ class DetailFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 }
