@@ -35,6 +35,7 @@ class MainViewModel @Inject constructor(
                 if(cities.isEmpty()) {
                     cityUseCases.addLocalCityCase(Weather(0, 35.0, "state", "Москва", true))
                 }
+                Log.d("testStartBag","Вм получение локальных данных")
                 val selectedCity = cities.first {it.main}
                 Log.d("mainViewModel",selectedCity.location)
                 _mainState.update { it.copy(savedCity = cities, selectedCity = selectedCity) }
@@ -43,15 +44,16 @@ class MainViewModel @Inject constructor(
     }
 
     fun getWeatherConnectYes() {
-        getWeatherJob?.cancel()
-        getWeatherJob = viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             _mainState.value.selectedCity?.let { city ->
+                Log.d("testStartBag","ВМ получение данных из api")
                 _mainState.update { it.copy(loadState = LoadState.LOADING) }
                 val receivedData = repository.getSevenDayCity(city.location)
                 if(receivedData.isSuccessful) {
                     _mainState.update { it.copy(loadState = LoadState.SUCCESS, successState = receivedData.body()) }
                     val update = receivedData.body()?.let { Weather(1, it.current.temp_c, it.current.condition.text, it.location.name, true) }
                     Log.d("mainViewModel","обновлены данные")
+                    Log.d("testStartBag","ВМ обновление локальныъх данных")
                     update?.let { cityUseCases.updateLocalCityCase(it) }
                 } else {
                     _mainState.update { it.copy(loadState = LoadState.ERROR) }

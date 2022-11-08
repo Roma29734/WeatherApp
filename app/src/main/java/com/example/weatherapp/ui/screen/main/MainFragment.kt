@@ -1,6 +1,7 @@
 package com.example.weatherapp.ui.screen.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -51,6 +52,7 @@ class MainFragment : Fragment() {
 //        Получение локальных данных, и установка
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                Log.d("testStartBag","первый launch в mainFragment")
                 viewModel.mainState.map { it.selectedCity }.distinctUntilChanged().collectLatest {
                     it?.let { it1 -> setUi(it1.location, it.condition, it.degree) }
                 }
@@ -60,8 +62,10 @@ class MainFragment : Fragment() {
         network?.observe(viewLifecycleOwner) { state ->
             if (state) {
 //                Получение данных с api и установка их
+
                 viewModel.getWeatherConnectYes()
                 lifecycleScope.launch {
+                    Log.d("testStartBag","второй лаунч получение установка данных")
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         viewModel.mainState.collectLatest { uiState ->
 //                            обработка состояния загрузки
