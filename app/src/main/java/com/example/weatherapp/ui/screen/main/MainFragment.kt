@@ -1,5 +1,6 @@
 package com.example.weatherapp.ui.screen.main
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -10,7 +11,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
+import coil.load
 import com.example.weatherapp.R
+import com.example.weatherapp.base.BaseFragment
 import com.example.weatherapp.databinding.FragmentMainBinding
 import com.example.weatherapp.ui.view.ListFeaturedCities
 import com.example.weatherapp.utils.LoadState
@@ -23,25 +26,14 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
-
-    private var _binding: FragmentMainBinding? = null
-    private val binding get() = _binding!!
+class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
     private val adapter = MainAdapter()
     private val adapterSevenDay = MainAdapterSevenDeay()
-    private val network by lazy { context?.let { NetworkState(it) } }
     private val viewModel by viewModels<MainViewModel>()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,49 +54,50 @@ class MainFragment : Fragment() {
         network?.observe(viewLifecycleOwner) { state ->
             if (state) {
 //                Получение данных с api и установка их
-
                 viewModel.getWeatherConnectYes()
-                lifecycleScope.launch {
-                    Log.d("testStartBag","второй лаунч получение установка данных")
-                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        viewModel.mainState.collectLatest { uiState ->
+                Log.d("testStartBag","вызвал ВМ установку данных ")
+            } else {
+//                Установка состояния загрузки при отсутствии интернета
+                binding.progressBar.visibility = View.VISIBLE
+                showShackBarNoInternetConnection(view)
+            }
+        }
+
+        lifecycleScope.launch {
+            Log.d("testStartBag","второй лаунч получение установка данных")
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.mainState.collectLatest { uiState ->
 //                            обработка состояния загрузки
-                            when (uiState.loadState) {
-                                LoadState.LOADING -> {
-                                    binding.progressBar.visibility = View.VISIBLE
-                                }
-                                LoadState.SUCCESS -> {
-                                    binding.progressBar.visibility = View.INVISIBLE
-                                    uiState.successState?.let {
-                                        setUiOk(
-                                            it.location.name,
-                                            it.current.condition.text,
-                                            it.current.temp_c,
-                                            it.current.feelslike_c,
-                                            it.current.wind_kph,
-                                            it.forecast.forecastday[0].astro.sunrise,
-                                            it.forecast.forecastday[0].astro.sunset
-                                        )
-                                        adapter.setTodayWeather(it.forecast.forecastday[0].hour)
-                                        adapterSevenDay.setSevenDay(it.forecast.forecastday)
-                                    }
-                                }
-                                LoadState.ERROR -> {
-                                    Toast.makeText(
-                                        context,
-                                        "Возникла ошибка, перезагрузите приложение",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
+                    when (uiState.loadState) {
+                        LoadState.LOADING -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        LoadState.SUCCESS -> {
+                            binding.progressBar.visibility = View.INVISIBLE
+                            uiState.successState?.let {
+                                setUiOk(
+                                    it.location.name,
+                                    it.current.condition.text,
+                                    it.current.temp_c,
+                                    it.current.feelslike_c,
+                                    it.current.wind_kph,
+                                    it.forecast.forecastday[0].astro.sunrise,
+                                    it.forecast.forecastday[0].astro.sunset,
+                                    it.current.condition.icon
+                                )
+                                adapter.setTodayWeather(it.forecast.forecastday[0].hour)
+                                adapterSevenDay.setSevenDay(it.forecast.forecastday)
                             }
+                        }
+                        LoadState.ERROR -> {
+                            Toast.makeText(
+                                context,
+                                "Возникла ошибка, перезагрузите приложение",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 }
-
-            } else {
-//                Установка состояния загрузки при отсутствии интернета
-                _binding!!.progressBar.visibility = View.VISIBLE
-                showShackBarNoInternetConnection(view)
             }
         }
 
@@ -119,7 +112,11 @@ class MainFragment : Fragment() {
         }
     }
 //    Установка ui с локальной базы данных
-    fun setUi(textLocation: String, textStatus: String, temp: Double) {
+@SuppressLint("SimpleDateFormat")
+fun setUi(textLocation: String, textStatus: String, temp: Double) {
+        val dateFormat = SimpleDateFormat("d MMMM")
+        val date = dateFormat.format(Date())
+        binding.tollBar.textDate.text = date
         binding.tollBar.textLocatoin.text = textLocation
         binding.textStatus.text = textStatus
         binding.textDegree.text = temp.toCelsiusString()
@@ -129,6 +126,7 @@ class MainFragment : Fragment() {
         textLocation: String, textStatus: String,
         temp: Double, liveDegree: Double, wind: Double,
         sunRice: String, sunSet: String,
+        img: String,
     ) {
         binding.tollBar.textLocatoin.text = textLocation
         binding.textStatus.text = textStatus
@@ -137,10 +135,22 @@ class MainFragment : Fragment() {
         binding.newsOfTheDay.textWind.text = wind.toString()
         binding.newsOfTheDay.textSunRice.text = sunRice
         binding.newsOfTheDay.textSunSet.text = sunSet
+        binding.imageView2.load(img)
+}
+
+    fun checkCity() {
+        lifecycleScope.launch {
+            if(viewModel.getSizeCity()) {
+                Log.d("testPusk","Есть избранное")
+            } else {
+                Log.d("testPusk","Нема избранное")
+                view?.let { Navigation.findNavController(it).navigate(R.id.action_mainFragment_to_welcomeFragment2) }
+            }
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onStart() {
+        super.onStart()
+        checkCity()
     }
 }

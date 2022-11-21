@@ -15,8 +15,10 @@
             app:destination="@id/searchFragment"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_mainFragment_to_favouriteFragment"
-            app:destination="@id/favouriteFragment" />
+            android:id="@+id/action_mainFragment_to_welcomeFragment2"
+            app:destination="@id/welcomeFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -37,8 +39,23 @@
             app:argType="com.example.weatherapp.data.model.search.SearchItem" />
     </fragment>
     <fragment
-        android:id="@+id/favouriteFragment"
-        android:name="com.example.weatherapp.ui.screen.favourite.FavouriteFragment"
-        android:label="fragment_favourite"
-        tools:layout="@layout/fragment_favourite" />
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.weatherapp.ui.screen.start.welcome.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_selectedFragment"
+            app:destination="@id/selectedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectedFragment"
+        android:name="com.example.weatherapp.ui.screen.start.selectCity.SelectedFragment"
+        android:label="fragment_selected"
+        tools:layout="@layout/fragment_selected" >
+        <action
+            android:id="@+id/action_selectedFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/selectedFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

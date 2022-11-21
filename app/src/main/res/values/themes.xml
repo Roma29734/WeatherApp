@@ -22,4 +22,12 @@
         <item name="queryBackground">@android:color/transparent</item>
     </style>
 
+
+    <style name="materialButtonMain" parent="Widget.MaterialComponents.Button">
+        <item name="android:textSize">12sp</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:fontFamily">@font/lato_black</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

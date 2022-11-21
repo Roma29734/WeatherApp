@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.weatherapp.data.local.Weather
 import com.example.weatherapp.data.local.dao.WeatherDao
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -13,9 +15,8 @@ class LocalRepositortImpl @Inject constructor(
 ): LocalRepository {
     override fun readLocalWeather() = dao.readlLocalWeather()
 
-    override suspend fun addWeather(weather: Weather) {
-        dao.addWeather(weather)
-        Log.d("repositoryLocal","добавил в избранное")
+    override suspend fun addWeather(weather: Weather): Long {
+        return dao.addWeather(weather)
     }
 
     override suspend fun updateWeather(weather: Weather) {
@@ -25,9 +26,14 @@ class LocalRepositortImpl @Inject constructor(
 
     override suspend fun deleteWeather(weather: Weather) {
         dao.deleteCity(weather)
+        Log.d("searchProblemDelete","удаляю в репазитории")
     }
 
-    override suspend fun updateMainCity(weather: Weather) {
-        dao.updateSelectedCity(weather.id)
+    override suspend fun getSizeTable(): Int {
+       return dao.getSizeTable()
+    }
+
+    override suspend fun updateFavCity(id: Int) {
+        dao.updateFavCity(id)
     }
 }

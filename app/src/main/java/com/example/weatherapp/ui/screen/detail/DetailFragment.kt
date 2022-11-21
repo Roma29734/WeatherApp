@@ -3,14 +3,18 @@ package com.example.weatherapp.ui.screen.detail
 
 import android.net.Network
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.createSavedStateHandle
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.example.weatherapp.R
+import com.example.weatherapp.base.BaseFragment
 import com.example.weatherapp.data.local.Weather
 import com.example.weatherapp.databinding.FragmentDetailBinding
 import com.example.weatherapp.utils.NetworkState
@@ -19,24 +23,12 @@ import com.example.weatherapp.utils.toCelsiusString
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DetailFragment : Fragment() {
+class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
 
-    private var _binding: FragmentDetailBinding? = null
-    private val binding get() = _binding!!
     private val args by navArgs<DetailFragmentArgs>()
     private val viewModel by viewModels<DetailViewModel>()
-    private val network by lazy { context?.let { NetworkState(it) } }
     private val dayAdapter = DetailDayAdapter()
     private val sevenDayAdapter = DetailSevenDayAdapter()
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        _binding = FragmentDetailBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,6 +41,7 @@ class DetailFragment : Fragment() {
                 viewModel.getCity(args.searchResult.url)
                 viewModel.oneCity.observe(viewLifecycleOwner) {date ->
                     date?.body()?.let {
+                        setFavButtonImage(it.location.name)
                         binding.textDegree.text = it.current.temp_c.toCelsiusString()
                         binding.textStatus.text = it.current.condition.text
                         binding.tollBar.textLocatoin.text = it.location.name
@@ -64,10 +57,18 @@ class DetailFragment : Fragment() {
                 binding.tollBar.favouriteButton.setOnClickListener {
                     viewModel.oneCity.observe(viewLifecycleOwner) {date ->
                         date?.body()?.let {
-                            val local = Weather(0, it.current.temp_c, it.current.condition.text, it.location.name, false)
-                           viewModel.addFavData(local)
+                            if(viewModel.getStateCity(it.location.name)) {
+                                val local = Weather(0, it.current.temp_c, it.current.condition.text, it.location.name, false)
+                                viewModel.deleteFavData(local)
+                                Log.d("searchProblemDelete","Вызвал удаление из фрагмента")
+                                Toast.makeText(context, "Удалено из избранного", Toast.LENGTH_SHORT).show()
+                            } else {
+                                val local = Weather(0, it.current.temp_c, it.current.condition.text, it.location.name, false)
+                                viewModel.addFavData(local)
+                                Toast.makeText(context, "Добавленно в избранное", Toast.LENGTH_SHORT).show()
+                            }
+                            setFavButtonImage(it.location.name)
                         }
-                        Toast.makeText(context, "Добавленно в избранное", Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {
@@ -80,8 +81,12 @@ class DetailFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    fun setFavButtonImage(localName: String) {
+        if(!viewModel.getStateCity(localName)) {
+            binding.tollBar.favouriteButton.visibility = View.VISIBLE
+            binding.tollBar.favouriteButton.setImageResource(R.drawable.ic_favourite_non_set)
+        } else {
+            binding.tollBar.favouriteButton.visibility = View.GONE
+        }
     }
 }

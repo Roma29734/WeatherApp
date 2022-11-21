@@ -24,24 +24,32 @@ class ListFeaturedCities(
     private var _binding: FragmentListFeaturedCitiesBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<ListFeaturedCitiesViewModel>()
-    private val adapter: ListFeaturedAdapter = ListFeaturedAdapter(object :ListFeaturedAdapter.OnItemClickListener{
-        override fun onCityClick(city: Weather) {
-            viewModel.setClick(city)
-            this@ListFeaturedCities.dismiss()
-            update()
-        }
-    })
+//    private val adapter: ListFeaturedAdapter = ListFeaturedAdapter(object :ListFeaturedAdapter.OnItemClickListener{
+//        override fun onCityClick(city: Weather) {
+//            viewModel.setClick(city)
+//            this@ListFeaturedCities.dismiss()
+//            update()
+//        }
+//    }, viewModel::deleteCity)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentListFeaturedCitiesBinding.inflate(inflater, container, false)
-        binding.rvCities.adapter = adapter
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adapter: ListFeaturedAdapter = ListFeaturedAdapter(object :ListFeaturedAdapter.OnItemClickListener{
+            override fun onCityClick(city: Weather) {
+                viewModel.setClickTest(city)
+                this@ListFeaturedCities.dismiss()
+                update()
+            }
+        }, viewModel::deleteCity)
+
+        binding.rvCities.adapter = adapter
         viewModel.cities.observe(viewLifecycleOwner) {
             adapter.setFavCity(it)
         }

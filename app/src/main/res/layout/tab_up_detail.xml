@@ -41,7 +41,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_favourite_set" />
+        tools:srcCompat="@drawable/ic_favourite_set" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

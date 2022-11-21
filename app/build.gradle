@@ -86,8 +86,9 @@ dependencies {
     implementation "androidx.room:room-ktx:$roomVersion"
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
-    //DataBinding
-    kapt "com.android.databinding:compiler:3.2.0-alpha10"
+
+    def coil_version = "2.1.0"
+    implementation "io.coil-kt:coil:$coil_version"
 
 }
 kapt {

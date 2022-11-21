@@ -7,5 +7,5 @@ import javax.inject.Inject
 class UpdateSelectedCityCase @Inject constructor(
     private val repository: LocalRepository
 ){
-    suspend operator fun invoke (weather: Weather) = repository.updateMainCity(weather)
+    suspend operator fun invoke (weather: Weather) = repository.updateFavCity(weather.id)
 }
