@@ -47,19 +47,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 Log.d("testStartBag","первый launch в mainFragment")
                 viewModel.mainState.map { it.selectedCity }.distinctUntilChanged().collectLatest {
                     it?.let { it1 -> setUi(it1.location, it.condition, it.degree) }
+                    viewModel.testGetWeather()
+                    Log.d("testStartBar","вызвал функицю из вьюмодели")
                 }
-            }
-        }
-
-        network?.observe(viewLifecycleOwner) { state ->
-            if (state) {
-//                Получение данных с api и установка их
-                viewModel.getWeatherConnectYes()
-                Log.d("testStartBag","вызвал ВМ установку данных ")
-            } else {
-//                Установка состояния загрузки при отсутствии интернета
-                binding.progressBar.visibility = View.VISIBLE
-                showShackBarNoInternetConnection(view)
             }
         }
 
@@ -107,7 +97,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_searchFragment)
         }
         binding.tollBar.burgerImg.setOnClickListener {
-            val bottomSheet = ListFeaturedCities(viewModel::getWeatherConnectYes)
+            val bottomSheet = ListFeaturedCities(viewModel::testGetWeather)
             bottomSheet.show(childFragmentManager, ListFeaturedCities.BOTTOM_SHEET_CITIES_TAG)
         }
     }

@@ -34,8 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/lato_bold"
-                android:textColor="@color/white"
+                style="@style/textDetailWeatherMain"
                 tools:text="15м.с" />
 
             <TextView
@@ -45,10 +44,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:fontFamily="@font/lato_black"
                 android:text="Скорость ветра"
-                android:textColor="@color/Grey"
-                android:textSize="12sp" />
+                style="@style/textDetailsWeather" />
         </LinearLayout>
 
         <LinearLayout
@@ -70,8 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/lato_bold"
-                android:textColor="@color/white"
+                style="@style/textDetailWeatherMain"
                 tools:text="07.00" />
 
             <TextView
@@ -82,10 +78,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="6dp"
-                android:fontFamily="@font/lato_black"
                 android:text="Восход солнца"
-                android:textColor="@color/Grey"
-                android:textSize="12sp" />
+                style="@style/textDetailsWeather" />
         </LinearLayout>
 
         <LinearLayout
@@ -107,8 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/lato_bold"
-                android:textColor="@color/white"
+                style="@style/textDetailWeatherMain"
                 tools:text="19.00" />
 
             <TextView
@@ -119,10 +112,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="13dp"
                 android:layout_marginEnd="13dp"
-                android:fontFamily="@font/lato_black"
                 android:text="Закат солнца"
-                android:textColor="@color/Grey"
-                android:textSize="12sp" />
+                style="@style/textDetailsWeather"/>
         </LinearLayout>
 
         <LinearLayout
@@ -144,8 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/lato_bold"
-                android:textColor="@color/white"
+                style="@style/textDetailWeatherMain"
                 tools:text="15" />
 
             <TextView
@@ -156,10 +146,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:fontFamily="@font/lato_black"
                 android:text="ощущается как"
-                android:textColor="@color/Grey"
-                android:textSize="12sp" />
+                style="@style/textDetailsWeather"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

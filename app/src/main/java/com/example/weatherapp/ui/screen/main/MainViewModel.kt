@@ -9,14 +9,13 @@ import com.example.weatherapp.data.local.Weather
 import com.example.weatherapp.data.local.repository.LocalRepository
 import com.example.weatherapp.data.remote.repository.WeatherRepository
 import com.example.weatherapp.domain.CityUseCases
+import com.example.weatherapp.domain.getWeatherCase.GetWeatherUserCase
 import com.example.weatherapp.utils.LoadState
+import com.example.weatherapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,11 +23,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val cityUseCases: CityUseCases,
-    private val repository: WeatherRepository,
     private val localRepository: LocalRepository,
+    private val getWeatherUserCase: GetWeatherUserCase,
 ): ViewModel() {
-
-    private var getWeatherJob: Job? = null
 
     private var _mainState = MutableStateFlow(MainState())
     val mainState
@@ -48,27 +45,31 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getWeatherConnectYes() {
-        viewModelScope.launch {
-            _mainState.value.selectedCity?.let { city ->
-                Log.d("testStartBag","ВМ получение данных из api")
-                _mainState.update { it.copy(loadState = LoadState.LOADING) }
-                val receivedData = repository.getSevenDayCity(city.location)
-                if(receivedData.isSuccessful) {
-                    _mainState.update { it.copy(loadState = LoadState.SUCCESS, successState = receivedData.body()) }
-//                    val update = receivedData.body()?.let { Weather(1, it.current.temp_c, it.current.condition.text, it.location.name, city.main) }
-//                    Log.d("mainViewModel","обновлены данные")
-//                    Log.d("testStartBag","ВМ обновление локальныъх данных")
-//                    update?.let { cityUseCases.updateLocalCityCase(it) }
-                } else {
-                    _mainState.update { it.copy(loadState = LoadState.ERROR) }
-                }
-                Log.d("mainViewModel","вызвано getWeatherConnectYes")
-            }
-        }
-    }
-
     suspend fun getSizeCity(): Boolean {
         return localRepository.getSizeTable() != 0
+    }
+
+    fun testGetWeather() {
+        Log.d("testStartBag","Вм функция получения погоды")
+        viewModelScope.launch {
+            _mainState.value.selectedCity?.let { city ->
+                Log.d("testStartBag","Вм вызвал getWeatherUserCase")
+                getWeatherUserCase(city.location).collect { result ->
+                    Log.d("testStartBag","Вм зашел в onEach")
+                    when(result) {
+                        is Resource.Success -> {
+                            _mainState.update { it.copy(successState = result.data, loadState = LoadState.SUCCESS) }
+                            Log.d("testStartBag","Вм выдал погоду/состояниее success")
+                        }
+                        is Resource.Error -> {
+                            _mainState.update { it.copy(loadState = LoadState.ERROR) }
+                        }
+                        is Resource.Loading -> {
+                            _mainState.update { it.copy(loadState = LoadState.LOADING) }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

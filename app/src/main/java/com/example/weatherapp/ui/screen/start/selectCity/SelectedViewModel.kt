@@ -25,7 +25,7 @@ class SelectedViewModel @Inject constructor(
         val search = "%$query%"
         if(search.isEmpty()) return
         viewModelScope.launch {
-            searchResult.value = repository.searchCity(query)
+//            searchResult.value = repository.searchCity(query)
         }
     }
 

@@ -37,9 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/lato_regular"
-                android:textColor="@color/white"
-                android:textSize="50sp"
+                style="@style/textMainDegree"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="38°" />
@@ -59,9 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/lato_regular"
-                android:textColor="@color/white"
-                android:textSize="22sp"
+                style="@style/textMain"
                 app:layout_constraintStart_toStartOf="@+id/textDegree"
                 app:layout_constraintTop_toBottomOf="@+id/textDegree"
                 tools:text="Солнечно" />
@@ -98,10 +94,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/lato_bold"
                 android:text="@string/text_forecast_for_today"
-                android:textColor="@color/white"
-                android:textSize="20sp"
+                style="@style/textGroup"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/newsOfTheDay" />
 
@@ -111,10 +105,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/lato_bold"
                 android:text="@string/text_forecast_for_seven_day"
-                android:textColor="@color/white"
-                android:textSize="20sp"
+                style="@style/textGroup"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerWeatherToday" />
 

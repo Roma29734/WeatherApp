@@ -4,6 +4,8 @@ import com.example.weatherapp.data.local.repository.LocalRepository
 import com.example.weatherapp.data.remote.repository.WeatherRepository
 import com.example.weatherapp.domain.CityUseCases
 import com.example.weatherapp.domain.cityUserCase.*
+import com.example.weatherapp.domain.getWeatherCase.GetWeatherUserCase
+import com.example.weatherapp.domain.getWeatherCase.SearchWeatherUserCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,4 +45,13 @@ class domainBaseModule {
         deleteLocalCityCase: DeleteLocalCityCase,
         updateSelectedCityCase: UpdateSelectedCityCase
     ) = CityUseCases(getLocalCityCase, updateLocalCityCase, addLocalCityCase, deleteLocalCityCase, updateSelectedCityCase)
+
+
+    @Singleton
+    @Provides
+    fun provideGetWeatheruserCase(repository: WeatherRepository) = GetWeatherUserCase(repository)
+
+    @Singleton
+    @Provides
+    fun provideSearchWeatherCase(repository: WeatherRepository) = SearchWeatherUserCase(repository)
 }

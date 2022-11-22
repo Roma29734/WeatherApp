@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:textColor="@color/Grey"
+                style="@style/textDetailsWeather"
                 tools:text="12.00" />
 
             <ImageView

@@ -8,11 +8,15 @@ import retrofit2.Response
 
 class WeatherRepository {
 
-    suspend fun searchCity(city: String): Response<Search> {
+    suspend fun searchCity(city: String): Search {
         return RetrofitInstance.api.searchCity(city = city, apiKey = API_KEY)
     }
 
     suspend fun getSevenDayCity(city: String): Response<SevenDayForeCast> {
         return RetrofitInstance.api.getSevenDayCity(city = city, days = 7, apiKey = API_KEY)
+    }
+
+    suspend fun getTestDayCity(city: String): SevenDayForeCast {
+        return RetrofitInstance.api.getTestDay(city = city, days = 7, apiKey = API_KEY)
     }
 }

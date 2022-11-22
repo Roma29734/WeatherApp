@@ -16,7 +16,7 @@ interface WeatherService {
     suspend fun searchCity(
         @Query ("key") apiKey: String,
         @Query ("q") city: String
-    ): Response<Search>
+    ): Search
 
     @GET("v1/forecast.json?")
     suspend fun getSevenDayCity(
@@ -25,4 +25,11 @@ interface WeatherService {
         @Query("days") days: Int
     ): Response<SevenDayForeCast>
 
+
+    @GET("v1/forecast.json?")
+    suspend fun getTestDay(
+        @Query ("key") apiKey: String,
+        @Query("q") city: String,
+        @Query("days") days: Int
+    ): SevenDayForeCast
 }
