@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
 import com.example.weatherapp.data.local.Weather
+import com.example.weatherapp.data.model.search.Search
 import com.example.weatherapp.data.model.search.SearchItem
 import com.example.weatherapp.databinding.CardSearchRowBinding
 import com.example.weatherapp.ui.screen.search.SearchAdapter
@@ -39,7 +40,7 @@ class SelectedAdapter(
         return searchResult.size
     }
 
-    fun setSearch(search: List<SearchItem>) {
+    fun setSearch(search: Search) {
         searchResult = search
         notifyDataSetChanged()
     }

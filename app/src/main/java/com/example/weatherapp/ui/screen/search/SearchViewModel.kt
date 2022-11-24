@@ -8,6 +8,7 @@ import com.example.weatherapp.data.local.repository.LocalRepository
 import com.example.weatherapp.data.model.search.Search
 import com.example.weatherapp.data.model.search.SearchItem
 import com.example.weatherapp.data.remote.repository.WeatherRepository
+import com.example.weatherapp.domain.WeatherUseCases
 import com.example.weatherapp.domain.getWeatherCase.SearchWeatherUserCase
 import com.example.weatherapp.ui.screen.main.MainState
 import com.example.weatherapp.utils.LoadState
@@ -22,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchWeatherUserCase: SearchWeatherUserCase,
+    private val weatherUserCase: WeatherUseCases,
 ): ViewModel() {
 
     private var _searchResult = MutableStateFlow(SearchState())
@@ -32,7 +33,7 @@ class SearchViewModel @Inject constructor(
     fun searchWeather(query: String) {
         val search = "%$query%"
         viewModelScope.launch {
-            searchWeatherUserCase(search).collect {result ->
+            weatherUserCase.searchWeatherUserCase(search).collect {result ->
                 when (result) {
                     is Resource.Loading -> {
                         _searchResult.update { it.copy(loadState = LoadState.LOADING) }

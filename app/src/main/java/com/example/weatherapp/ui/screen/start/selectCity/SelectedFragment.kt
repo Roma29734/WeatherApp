@@ -8,10 +8,16 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.weatherapp.R
 import com.example.weatherapp.base.BaseFragment
 import com.example.weatherapp.databinding.FragmentSelectedBinding
+import com.example.weatherapp.utils.LoadState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SelectedFragment : BaseFragment<FragmentSelectedBinding>(FragmentSelectedBinding::inflate) {
@@ -24,26 +30,34 @@ class SelectedFragment : BaseFragment<FragmentSelectedBinding>(FragmentSelectedB
         setVisibility(true)
         binding.recyclerView.adapter = adapter
 
-        network?.observe(viewLifecycleOwner) { connect ->
-            if(connect) {
-                binding.SearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-                    override fun onQueryTextSubmit(p0: String?): Boolean {
-                        p0?.let { viewModel.searchWeather(it) }
-                        setVisibility(false)
-                        return false
+        binding.SearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                p0?.let { viewModel.searchWeather(it) }
+                setVisibility(false)
+                return false
+            }
+            override fun onQueryTextChange(p0: String?): Boolean {
+                p0?.let { viewModel.searchWeather(it) }
+                setVisibility(false)
+                return false
+            }
+        })
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.searchResult.collectLatest { result ->
+                    when(result.loadState) {
+                        LoadState.LOADING -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        LoadState.ERROR -> {
+                            binding.progressBar.visibility = View.INVISIBLE
+                        }
+                        LoadState.SUCCESS -> {
+                            binding.progressBar.visibility = View.INVISIBLE
+                            result.successState?.let { adapter.setSearch(it) }
+                        }
                     }
-                    override fun onQueryTextChange(p0: String?): Boolean {
-                        p0?.let { viewModel.searchWeather(it) }
-                        setVisibility(false)
-                        return false
-                    }
-                })
-
-                viewModel.searchResult.observe(viewLifecycleOwner) {result ->
-                    result?.body()?.let { adapter.setSearch(it) }
                 }
-            } else {
-                Toast.makeText(context, "Проебали интернет", Toast.LENGTH_SHORT).show()
             }
         }
     }

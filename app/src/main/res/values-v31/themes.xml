@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<!--    <style name="SplashActivity" parent="Theme.AppCompat.NoActionBar">-->
+<!--        &lt;!&ndash; Пункт 3&ndash;&gt;-->
+<!--        <item name="android:windowSplashScreenBackground">#140F37</item>-->
+<!--         Пункт 2-->
+<!--        <item name="android:windowSplashScreenIconBackgroundColor">-->
+<!--            #000000-->
+<!--        </item>-->
+<!--         Пункт 1-->
+<!--        <item name="android:windowSplashScreenAnimatedIcon">-->
+<!--            @drawable/ic_weather_splash-->
+<!--        </item>-->
+<!--         Пункт 4-->
+<!--        <item name="android:windowSplashScreenBrandingImage">-->
+<!--            @drawable/ic_weather_splash-->
+<!--        </item>-->
+<!--    </style>-->
+
+    <style name="Theme.WeatherApp.Launcher">
+
+<!--        <item name="android:windowSplashScreenBackground">#140F37</item>-->
+<!--        &lt;!&ndash; Пункт 2&ndash;&gt;-->
+<!--                <item name="android:windowSplashScreenIconBackgroundColor">-->
+<!--                    #140F37-->
+<!--                </item>-->
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_weather_splash</item>
+    </style>
+</resources>

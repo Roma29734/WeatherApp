@@ -5,23 +5,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
-import coil.load
 import com.example.weatherapp.R
 import com.example.weatherapp.base.BaseFragment
 import com.example.weatherapp.databinding.FragmentMainBinding
 import com.example.weatherapp.ui.view.ListFeaturedCities
 import com.example.weatherapp.utils.LoadState
 import dagger.hilt.android.AndroidEntryPoint
-import com.example.weatherapp.utils.NetworkState
-import com.example.weatherapp.utils.showShackBarNoInternetConnection
 import com.example.weatherapp.utils.toCelsiusString
-import kotlinx.android.synthetic.main.card_search_row.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -47,7 +42,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 Log.d("testStartBag","первый launch в mainFragment")
                 viewModel.mainState.map { it.selectedCity }.distinctUntilChanged().collectLatest {
                     it?.let { it1 -> setUi(it1.location, it.condition, it.degree) }
-                    viewModel.testGetWeather()
+                    viewModel.getWeather()
                     Log.d("testStartBar","вызвал функицю из вьюмодели")
                 }
             }
@@ -97,7 +92,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_searchFragment)
         }
         binding.tollBar.burgerImg.setOnClickListener {
-            val bottomSheet = ListFeaturedCities(viewModel::testGetWeather)
+            val bottomSheet = ListFeaturedCities(viewModel::getWeather)
             bottomSheet.show(childFragmentManager, ListFeaturedCities.BOTTOM_SHEET_CITIES_TAG)
         }
     }
@@ -125,7 +120,6 @@ fun setUi(textLocation: String, textStatus: String, temp: Double) {
         binding.newsOfTheDay.textWind.text = wind.toString()
         binding.newsOfTheDay.textSunRice.text = sunRice
         binding.newsOfTheDay.textSunSet.text = sunSet
-        binding.imageView2.load(img)
 }
 
     fun checkCity() {

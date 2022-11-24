@@ -86,10 +86,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$roomVersion"
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
-
-    def coil_version = "2.1.0"
-    implementation "io.coil-kt:coil:$coil_version"
-
+//    implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.4'
 }
 kapt {
     correctErrorTypes true

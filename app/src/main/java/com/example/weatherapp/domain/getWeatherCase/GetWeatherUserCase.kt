@@ -14,7 +14,7 @@ class GetWeatherUserCase @Inject constructor(
     operator fun invoke(city: String): Flow<Resource<SevenDayForeCast>> = flow {
         try {
             emit(Resource.Loading())
-            val result = repository.getTestDayCity(city)
+            val result = repository.getSevenDayCity(city)
             emit(Resource.Success(result))
         } catch (e: IOException) {
             emit(Resource.Error("No ithernet Connetc"))

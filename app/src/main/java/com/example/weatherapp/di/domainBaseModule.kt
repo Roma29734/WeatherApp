@@ -2,7 +2,7 @@ package com.example.weatherapp.di
 
 import com.example.weatherapp.data.local.repository.LocalRepository
 import com.example.weatherapp.data.remote.repository.WeatherRepository
-import com.example.weatherapp.domain.CityUseCases
+import com.example.weatherapp.domain.WeatherUseCases
 import com.example.weatherapp.domain.cityUserCase.*
 import com.example.weatherapp.domain.getWeatherCase.GetWeatherUserCase
 import com.example.weatherapp.domain.getWeatherCase.SearchWeatherUserCase
@@ -38,14 +38,7 @@ class domainBaseModule {
 
     @Singleton
     @Provides
-    fun provideCityUseCases(
-        getLocalCityCase: GetLocalCityCase,
-        updateLocalCityCase: UpdateLocalCutyCase,
-        addLocalCityCase: AddLocalCityCase,
-        deleteLocalCityCase: DeleteLocalCityCase,
-        updateSelectedCityCase: UpdateSelectedCityCase
-    ) = CityUseCases(getLocalCityCase, updateLocalCityCase, addLocalCityCase, deleteLocalCityCase, updateSelectedCityCase)
-
+    fun provideGetSizeCityLocal(repository: LocalRepository) = GetSizeLocalCityCase(repository)
 
     @Singleton
     @Provides
@@ -54,4 +47,18 @@ class domainBaseModule {
     @Singleton
     @Provides
     fun provideSearchWeatherCase(repository: WeatherRepository) = SearchWeatherUserCase(repository)
+
+
+    @Singleton
+    @Provides
+    fun provideCityUseCases(
+        getLocalCityCase: GetLocalCityCase,
+        updateLocalCityCase: UpdateLocalCutyCase,
+        addLocalCityCase: AddLocalCityCase,
+        deleteLocalCityCase: DeleteLocalCityCase,
+        updateSelectedCityCase: UpdateSelectedCityCase,
+        getSizeLocalCityCase: GetSizeLocalCityCase,
+        getWeatherUserCase: GetWeatherUserCase,
+        searchWeatherUserCase: SearchWeatherUserCase,
+    ) = WeatherUseCases(getLocalCityCase, updateLocalCityCase, addLocalCityCase, deleteLocalCityCase, updateSelectedCityCase, getSizeLocalCityCase, getWeatherUserCase, searchWeatherUserCase)
 }

@@ -12,11 +12,7 @@ class WeatherRepository {
         return RetrofitInstance.api.searchCity(city = city, apiKey = API_KEY)
     }
 
-    suspend fun getSevenDayCity(city: String): Response<SevenDayForeCast> {
+    suspend fun getSevenDayCity(city: String): SevenDayForeCast {
         return RetrofitInstance.api.getSevenDayCity(city = city, days = 7, apiKey = API_KEY)
-    }
-
-    suspend fun getTestDayCity(city: String): SevenDayForeCast {
-        return RetrofitInstance.api.getTestDay(city = city, days = 7, apiKey = API_KEY)
     }
 }
